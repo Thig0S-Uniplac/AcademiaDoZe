@@ -1,5 +1,5 @@
 using AcademiaDoZe.Domain.Entities.Base;
-
+//thiago kovaslki
 namespace AcademiaDoZe.Domain.Entities
 {
     public class AcessoColaborador : Entity

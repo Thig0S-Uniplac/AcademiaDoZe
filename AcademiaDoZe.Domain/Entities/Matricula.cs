@@ -1,6 +1,7 @@
 
 using AcademiaDoZe.Domain.Entities.Base;
 using AcademiaDoZe.Domain.Enums;
+//thiago kovaslki
 
 namespace AcademiaDoZe.Domain.Entities
 {

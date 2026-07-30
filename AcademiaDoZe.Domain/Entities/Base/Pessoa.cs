@@ -1,5 +1,6 @@
 using AcademiaDoZe.Domain.Entities.Base;
 using AcademiaDoZe.Domain.ValueObjects;
+//thiago kovaslki
 
 namespace AcademiaDoZe.Domain.Entities
 {

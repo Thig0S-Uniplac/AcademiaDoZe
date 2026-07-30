@@ -1,4 +1,5 @@
 namespace AcademiaDoZe.Domain.Enums;
+//thiago kovaslki
 
 public enum ColaboradorVinculo
 {

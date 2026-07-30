@@ -1,5 +1,6 @@
 using System;
 using AcademiaDoZe.Domain.Entities.Base;
+//thiago kovaslki
 
 namespace AcademiaDoZe.Domain.Entities
 {

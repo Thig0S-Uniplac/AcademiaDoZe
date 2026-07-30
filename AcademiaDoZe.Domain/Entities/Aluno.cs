@@ -1,6 +1,7 @@
 using AcademiaDoZe.Domain.ValueObjects;
 
 namespace AcademiaDoZe.Domain.Entities;
+//thiago kovaslki
 
 public class Aluno : Pessoa
 {
