@@ -1,4 +1,5 @@
 using AcademiaDoZe.Domain.Entities.Base;
+using AcademiaDoZe.Domain.Enums;
 using AcademiaDoZe.Domain.ValueObjects;
 //thiago kovaslki
 
@@ -10,11 +11,21 @@ namespace AcademiaDoZe.Domain.Entities
         public Cpf Cpf { get; private set; }
         public Email Email { get; private set; }
         public Telefone Telefone { get; private set; }
-        public DateTime DataNascimento { get; private set; }
+        public DateOnly DataNascimento { get; private set; }
         public Endereco Endereco { get; private set; }
 
-        protected Pessoa(string nome, Cpf cpf, Email email, Telefone telefone, DateTime dataNascimento, Endereco endereco)
+        protected Pessoa(int id,
+        string nome,
+        Cpf cpf,
+        DateOnly dataNascimento,
+        Telefone telefone,
+        Email email,
+        Endereco endereco,
+        Senha senha,
+        Arquivo foto
+       )
         {
+            Id = id;
             Nome = nome;
             Cpf = cpf;
             Email = email;

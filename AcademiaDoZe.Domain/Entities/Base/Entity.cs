@@ -3,6 +3,6 @@ namespace AcademiaDoZe.Domain.Entities.Base;
 
 public abstract class Entity
 {
-    public Guid Id { get; protected set; } = Guid.CreateVersion7();
+    public int Id { get; protected set; }
 
 }

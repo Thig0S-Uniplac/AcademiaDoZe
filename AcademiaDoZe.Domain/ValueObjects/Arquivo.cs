@@ -1,15 +1,26 @@
+using AcademiaDoZe.Domain.Common;
+
 namespace AcademiaDoZe.Domain.ValueObjects;
-
-public class Arquivo
+//thiago kovalski
+public record Arquivo
 {
-    public string Nome { get; private set; }
-    public string Extensao { get; private set; }
-    public byte[] Bytes { get; private set; }
+    public byte[] Conteudo { get; }
 
-    public Arquivo(string nome, string extensao, byte[] bytes)
+    private Arquivo(byte[] conteudo)
     {
-        Nome = nome;
-        Extensao = extensao;
-        Bytes = bytes;
+        Conteudo = conteudo;
+    }
+
+    public static Result<Arquivo> Criar(byte[] conteudo)
+    {
+        if (conteudo == null)
+            return Result<Arquivo>.Failure("Arquivo", "ARQUIVO_OBRIGATORIO");
+
+        const int tamanhoMaximoBytes = 15 * 1024 * 1024; // 15MB
+        if (conteudo.Length > tamanhoMaximoBytes)
+            return Result<Arquivo>.Failure("Arquivo", "ARQUIVO_TIPO_TAMANHO");
+
+        // cria e retorna o objeto
+        return Result<Arquivo>.Success(new Arquivo(conteudo));
     }
 }
