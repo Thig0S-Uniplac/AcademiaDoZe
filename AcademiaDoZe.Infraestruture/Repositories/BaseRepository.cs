@@ -11,7 +11,7 @@ As operações de CRUD e mapeamento são implementadas diretamente nas classes f
 public abstract class BaseRepository : IDisposable, IAsyncDisposable
 {
     protected readonly string _connectionString;
-    protected readonly DatabaseType _databaseType;
+    protected readonly DatabaseType _databaseType = DatabaseType.Sqlite;
     private DbConnection? _connection;
     private bool _disposed;
     protected BaseRepository(string connectionString, DatabaseType databaseType)

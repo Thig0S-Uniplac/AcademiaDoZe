@@ -6,17 +6,21 @@ namespace AcadademiaDoZe.Infrastructure.Tests;
 public abstract class TestBase
 {
     // Alterne o SGBD alvo dos testes trocando apenas a constante abaixo:
-    private const DatabaseType SelectedDatabaseType = DatabaseType.SqlServer;
+    private const DatabaseType SelectedDatabaseType = DatabaseType.Sqlite;
     protected string ConnectionString { get; }
     protected DatabaseType DatabaseType { get; }
     protected TestBase()
     {
         DatabaseType = SelectedDatabaseType;
-        // Ajuste a ConnectionString com caminhos e credenciais válidas
+
         ConnectionString = DatabaseType switch
         {
-            DatabaseType.SqlServer => "Server=localhost;Database=db_academia_do_ze;User Id=sa;Password=abcBolinhas12345;TrustServerCertificate=True;Encrypt=True;",
-            _ => throw new ArgumentOutOfRangeException(nameof(DatabaseType), DatabaseType, "SGBD não suportado para testes.")
+            DatabaseType.Sqlite => "Data Source=db_academia_do_ze.db;",
+            _ => throw new ArgumentOutOfRangeException(
+                nameof(DatabaseType),
+                DatabaseType,
+                "SGBD não suportado para testes."
+            )
         };
     }
     #region Geradores de dados aleatórios

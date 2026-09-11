@@ -12,9 +12,7 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.11" />
     <PackageReference Include="MySql.Data" Version="26.7.0" />
   </ItemGroup>
-
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\script_sqlserver.sql" />
-</ItemGroup>
-
+    <EmbeddedResource Include="Scripts\script_sqlite.sql" />
+  </ItemGroup>
 </Project>
