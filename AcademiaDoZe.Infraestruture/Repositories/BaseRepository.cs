@@ -7,6 +7,7 @@ namespace AcademiaDoZe.Infrastructure.Repositories;
 BaseRepository é uma classe utilitária de infraestrutura focada em gerenciamento de conexões (GetOpenConnectionAsync e Dispose/DisposeAsync).
 As operações de CRUD e mapeamento são implementadas diretamente nas classes filhas (AlunoRepository, ColaboradorRepository, etc.).
 */
+// thiago kovalski
 public abstract class BaseRepository : IDisposable, IAsyncDisposable
 {
     protected readonly string _connectionString;

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Data.Common;
 using System.Reflection;
 namespace AcademiaDoZe.Infrastructure.Data;
+// thiago kovalski
 
 public static class DbInitializer
 {

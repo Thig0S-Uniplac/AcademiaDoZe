@@ -1,10 +1,9 @@
 using AcademiaDoZe.Infraestruture.Exceptions;
 using Microsoft.Data.SqlClient;
-using Microsoft.Data.Sqlite;
-using MySql.Data.MySqlClient;
 using System.Data;
 using System.Data.Common;
 namespace AcademiaDoZe.Infrastructure.Data;
+// thiago kovalski
 
 public enum DatabaseType
 {

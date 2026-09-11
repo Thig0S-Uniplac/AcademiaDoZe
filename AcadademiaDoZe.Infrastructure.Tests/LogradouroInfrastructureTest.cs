@@ -1,4 +1,5 @@
 namespace AcadademiaDoZe.Infrastructure.Tests;
+// thiago kovalski
 
 using AcademiaDoZe.Domain.ValueObjects;
 using AcademiaDoZe.Infraestruture.Exceptions;

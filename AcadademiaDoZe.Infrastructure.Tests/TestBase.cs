@@ -1,6 +1,7 @@
 using AcademiaDoZe.Infrastructure.Data;
 [assembly: CollectionBehavior(CollectionBehavior.CollectionPerAssembly, DisableTestParallelization = true)]
 namespace AcadademiaDoZe.Infrastructure.Tests;
+// thiago kovalski
 
 public abstract class TestBase
 {

@@ -6,6 +6,7 @@ using AcademiaDoZe.Infrastructure.Data;
 using System.Data;
 using System.Data.Common;
 namespace AcademiaDoZe.Infrastructure.Repositories;
+// thiago kovalski
 
 public class LogradouroRepository : BaseRepository, ILogradouroRepository
 {

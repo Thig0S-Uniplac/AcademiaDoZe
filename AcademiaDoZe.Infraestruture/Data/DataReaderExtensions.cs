@@ -1,6 +1,7 @@
 
 using System.Data.Common;
 namespace AcademiaDoZe.Infrastructure.Data;
+// thiago kovalski
 
 public static class DataReaderExtensions
 {

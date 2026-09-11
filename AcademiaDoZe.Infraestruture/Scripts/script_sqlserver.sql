@@ -2,6 +2,7 @@
 -- SCRIPT DE CRIAÇÃO DO BANCO DE DADOS: db_academia_do_ze (SQL Server)
 -- Baseado na camada de domínio AcademiaDoZe.Domain
 -- ============================================================
+-- thiago kovalski
 IF OBJECT_ID(N'dbo.tb_logradouro', N'U') IS NULL
     BEGIN
         CREATE TABLE tb_logradouro (

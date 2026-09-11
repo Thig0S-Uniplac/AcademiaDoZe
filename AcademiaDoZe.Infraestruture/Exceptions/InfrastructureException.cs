@@ -1,5 +1,6 @@
 
 namespace AcademiaDoZe.Infraestruture.Exceptions;
+// thiago kovalski
 
 public class InfrastructureException : Exception
 {
