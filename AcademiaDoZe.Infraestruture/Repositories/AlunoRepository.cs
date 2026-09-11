@@ -7,7 +7,7 @@ using AcademiaDoZe.Domain.ValueObjects;
 using AcademiaDoZe.Infraestruture.Exceptions;
 using AcademiaDoZe.Infrastructure.Data;
 using AcademiaDoZe.Infrastructure.Repositories;
-
+//thiago kovalski
 namespace AcademiaDoZe.Infraestruture.Repositories;
 
 public class AlunoRepository(string connectionString, DatabaseType databaseType) :

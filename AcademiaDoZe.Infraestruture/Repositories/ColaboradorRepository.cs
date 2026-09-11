@@ -8,7 +8,7 @@ using AcademiaDoZe.Infrastructure.Repositories;
 using System.Data;
 using System.Data.Common;
 namespace AcademiaDoZe.Infraestruture.Repositories;
-
+//thiago kovalski
 public class ColaboradorRepository : BaseRepository, IColaboradorRepository
 {
     public ColaboradorRepository(string connectionString, DatabaseType databaseType) : base(connectionString, databaseType)
