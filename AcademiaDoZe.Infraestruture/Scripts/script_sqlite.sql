@@ -3,7 +3,7 @@
 -- Baseado na camada de domínio AcademiaDoZe.Domain
 -- ============================================================
 -- Habilitar suporte a Chaves Estrangeiras no SQLite
-DatabaseType.Sqlite
+PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS tb_logradouro (
     id_logradouro INTEGER PRIMARY KEY AUTOINCREMENT,

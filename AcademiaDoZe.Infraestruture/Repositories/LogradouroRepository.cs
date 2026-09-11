@@ -176,7 +176,7 @@ public class LogradouroRepository : BaseRepository, ILogradouroRepository
     {
         try
         {
-            string query = $"{BaseSelectQuery} WHERE cidade = @Cidade ORDER BY bairro, nome";
+            string query = $"{BaseSelectQuery} WHERE LOWER(cidade) = LOWER(@Cidade) ORDER BY bairro, nome";
             await using var command = await CreateCommandAsync(query, cancellationToken);
             command.AddParameter("@Cidade", cidade, DbType.String);
             await using var reader = await command.ExecuteReaderAsync(cancellationToken);

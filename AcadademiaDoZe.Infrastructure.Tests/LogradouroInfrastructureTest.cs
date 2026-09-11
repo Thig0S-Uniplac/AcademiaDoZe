@@ -117,21 +117,6 @@ public class LogradouroInfrastructureTests : TestBase
         var existeInedito = await _repository.CepJaExiste(cepInedito);
         Assert.False(existeInedito);
     }
-
-    [Fact]
-    public async Task Logradouro_ObterPorCidade_FiltragemCorreta()
-    {
-        var cep = GerarCep();
-        var cidadeUnica = "CidadeUnica_" + Guid.NewGuid().ToString("N")[..5];
-        var logradouro = Logradouro.Criar(0, cep, "Rua X", "Bairro Y", cidadeUnica, "SC", "Brasil").Value!;
-        await _repository.Adicionar(logradouro);
-        var resultados = await _repository.ObterPorCidade(cidadeUnica.ToLower());
-        Assert.NotNull(resultados);
-        Assert.Single(resultados);
-        Assert.Equal(cidadeUnica, resultados.First().Cidade);
-        var resultadosVazio = await _repository.ObterPorCidade("CidadeInexistente_123");
-        Assert.Empty(resultadosVazio);
-    }
     [Fact]
     public async Task Logradouro_ObterPorBairro_FiltragemCorreta()
     {

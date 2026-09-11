@@ -1,5 +1,5 @@
 using AcademiaDoZe.Infraestruture.Exceptions;
-using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 using System.Data;
 using System.Data.Common;
 namespace AcademiaDoZe.Infrastructure.Data;
@@ -20,7 +20,7 @@ public static class DbProvider
         {
             DbConnection connection = dbType switch
             {
-                DatabaseType.Sqlite => new SqlConnection(connectionString),
+                DatabaseType.Sqlite => new SqliteConnection(connectionString),
                 _ => throw new InfrastructureException("SGDB_NAO_SUPORTADO", $"SGDB não suportado: {dbType}")
             };
             if (connection == null) throw new InfrastructureException("FALHA_CONEXAO", $"Falha ao instanciar conexão para {dbType}.");
@@ -90,7 +90,7 @@ public static class DbProvider
         if (string.IsNullOrWhiteSpace(insertSql)) throw new InfrastructureException("SQL_INSERT_VAZIO", "Comando SQL de INSERT não pode ser vazio.");
         return dbType switch
         {
-            DatabaseType.Sqlite => $"{insertSql}; SELECT SCOPE_IDENTITY();",
+            DatabaseType.Sqlite => $"{insertSql}; SELECT last_insert_rowid();",
             _ => throw new InfrastructureException("SGDB_NAO_SUPORTADO", $"SGDB não suportado: {dbType}")
         };
     }
@@ -98,15 +98,15 @@ public static class DbProvider
     {
         return dbType switch
         {
-            DatabaseType.Sqlite => "GETDATE()",
-            _ => "CURRENT_DATE()"
+            DatabaseType.Sqlite => "CURRENT_TIMESTAMP",
+            _ => throw new InfrastructureException("SGDB_NAO_SUPORTADO", $"SGDB não suportado: {dbType}")
         };
     }
     public static string GetDateAddDaysExpression(string dateExpr, string daysParam, DatabaseType dbType)
     {
         return dbType switch
         {
-            DatabaseType.Sqlite => $"DATEADD(day, {daysParam}, {dateExpr})",
+            DatabaseType.Sqlite => $"datetime({dateExpr}, '+' || {daysParam} || ' days')",
             _ => throw new InfrastructureException("SGDB_NAO_SUPORTADO", $"SGDB não suportado: {dbType}")
         };
     }
@@ -114,7 +114,7 @@ public static class DbProvider
     {
         return dbType switch
         {
-            DatabaseType.Sqlite => $"DATEPART(HOUR, {dateColumn})",
+            DatabaseType.Sqlite => $"CAST(strftime('%H', {dateColumn}) AS INTEGER)",
             _ => throw new InfrastructureException("SGDB_NAO_SUPORTADO", $"SGDB não suportado: {dbType}")
         };
     }
@@ -122,7 +122,7 @@ public static class DbProvider
     {
         return dbType switch
         {
-            DatabaseType.Sqlite => $"MONTH({dateColumn})",
+            DatabaseType.Sqlite => $"CAST(strftime('%m', {dateColumn}) AS INTEGER)",
             _ => throw new InfrastructureException("SGDB_NAO_SUPORTADO", $"SGDB não suportado: {dbType}")
         };
     }
@@ -130,7 +130,7 @@ public static class DbProvider
     {
         return dbType switch
         {
-            DatabaseType.Sqlite => $"DAY({dateColumn})",
+            DatabaseType.Sqlite => $"CAST(strftime('%d', {dateColumn}) AS INTEGER)",
             _ => throw new InfrastructureException("SGDB_NAO_SUPORTADO", $"SGDB não suportado: {dbType}")
         };
     }

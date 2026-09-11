@@ -24,15 +24,15 @@ public class ColaboradorInfrastructureTests : TestBase
         var foto = Arquivo.Criar(new byte[] { 5, 6, 7, 8 }).Value!;
         var colaboradorResult = Colaborador.Criar(
         id: 0,
-        nome: "Colaborador Teste " + Guid.NewGuid().ToString("N")[..5],
+        nome: "thiago " + Guid.NewGuid().ToString("N")[..5],
         cpf: GerarCpf(),
         dataNascimento: new DateOnly(1995, 5, 15),
         telefone: GerarTelefone(),
         email: GerarEmail(),
         endereco: logradouro,
         numero: "200",
-        complemento: "Sala 2",
-        senha: "SenhaValida123",
+        complemento: "kovalski",
+        senha: "Sqlite",
         foto: foto,
         dataAdmissao: new DateOnly(2023, 1, 1),
         tipo: ColaboradorTipo.Instrutor,
@@ -55,6 +55,8 @@ public class ColaboradorInfrastructureTests : TestBase
         Assert.Equal(colaborador.Id, obtido.Id);
         Assert.Equal(colaborador.Cpf.Valor, obtido.Cpf.Valor);
         Assert.Equal(colaborador.Nome, obtido.Nome);
+        Assert.StartsWith("thiago ", obtido.Nome);
+        Assert.Equal("Sqlite", obtido.Senha.Valor);
         Assert.Equal(colaborador.Email.Valor, obtido.Email.Valor);
         Assert.Equal(colaborador.Tipo, obtido.Tipo);
         Assert.Equal(colaborador.Vinculo, obtido.Vinculo);
