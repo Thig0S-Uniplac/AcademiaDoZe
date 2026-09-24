@@ -1,4 +1,4 @@
-﻿using AcademiaDoZe.Domain.Entities; 
+﻿using AcademiaDoZe.Domain.Entities;
 using AcademiaDoZe.Domain.Enums;
 using AcademiaDoZe.Domain.ValueObjects; //Thiago Kovalski
 
@@ -91,7 +91,7 @@ public class MatriculaTests
             "Objetivo",
             restricoes,
             laudo,
-            observacoes
+            observacoes ?? string.Empty
         );
         Assert.Equal(expectSuccess, result.IsSuccess);
     }

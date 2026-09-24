@@ -51,7 +51,7 @@ public class ValueObjectsTests
     [Theory(DisplayName = "Endereco: valida obrigatoriedade do logradouro e número")]
     [InlineData(null, "1", "LOGRADOURO_OBRIGATORIO")]
     [InlineData("valid", "", "NUMERO_OBRIGATORIO")]
-    public void Deve_Falhar_Criacao_Quando_EnderecoInvalido(string logradouroCase, string numero, string expected)
+    public void Deve_Falhar_Criacao_Quando_EnderecoInvalido(string? logradouroCase, string numero, string expected)
     {
         Logradouro? logradouro = null;
         if (logradouroCase == "valid")
