@@ -20,7 +20,7 @@ public static class DbProvider
         {
             DbConnection connection = dbType switch
             {
-                DatabaseType.Sqlite => new SqliteConnection(connectionString),
+                DatabaseType.Sqlite => CreateSqliteConnection(connectionString),
                 _ => throw new InfrastructureException("SGDB_NAO_SUPORTADO", $"SGDB não suportado: {dbType}")
             };
             if (connection == null) throw new InfrastructureException("FALHA_CONEXAO", $"Falha ao instanciar conexão para {dbType}.");
@@ -31,6 +31,35 @@ public static class DbProvider
             throw new InfrastructureException("FALHA_CONEXAO", $"Falha ao abrir conexão para {dbType}.", ex);
         }
     }
+
+    public static string CreateSqliteConnectionString(string databasePath)
+    {
+        if (string.IsNullOrWhiteSpace(databasePath))
+            throw new InfrastructureException("CAMINHO_BANCO_VAZIO", "O caminho do arquivo SQLite não pode ser vazio.");
+
+        return new SqliteConnectionStringBuilder
+        {
+            DataSource = databasePath,
+            DefaultTimeout = 5,
+            ForeignKeys = true
+        }.ToString();
+    }
+
+    private static SqliteConnection CreateSqliteConnection(string connectionString)
+    {
+        var builder = new SqliteConnectionStringBuilder(connectionString);
+        builder.ForeignKeys = true;
+        if (builder.Mode != SqliteOpenMode.Memory && !string.IsNullOrWhiteSpace(builder.DataSource) &&
+            !string.Equals(builder.DataSource, ":memory:", StringComparison.OrdinalIgnoreCase))
+        {
+            var directory = Path.GetDirectoryName(Path.GetFullPath(builder.DataSource));
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(directory);
+        }
+
+        return new SqliteConnection(builder.ConnectionString);
+    }
+
     public static DbCommand CreateCommand(string commandText, DbConnection connection, CommandType commandType = CommandType.Text)
     {
         if (connection == null) throw new InfrastructureException("CONEXAO_NULA", "Conexão não pode ser nula para criar um comando.");

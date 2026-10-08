@@ -8,9 +8,7 @@
     <ProjectReference Include="..\AcademiaDoZe.Domain\AcademiaDoZe.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.2" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.11" />
-    <PackageReference Include="MySql.Data" Version="26.7.0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Scripts\script_sqlite.sql" />

@@ -6,4 +6,5 @@
   <Project Path="AcademiaDoZe.Domain/AcademiaDoZe.Domain.csproj" />
   <Project Path="AcademiaDoZe.Infraestruture/AcademiaDoZe.Infraestruture.csproj" />
   <Project Path="AcademiaDoZe.Application/AcademiaDoZe.Application.csproj" />
+  <Project Path="AcademiaDoZe.Presentation.AppMaui/AcademiaDoZe.Presentation.AppMaui.csproj" />
 </Solution>
