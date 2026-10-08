@@ -1,4 +1,5 @@
-﻿using Android.App;
+// Thiago Kovalski
+using Android.App;
 using Android.Runtime;
 
 namespace AcademiaDoZe.Presentation.AppMaui;

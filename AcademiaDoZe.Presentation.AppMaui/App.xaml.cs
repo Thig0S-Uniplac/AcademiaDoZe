@@ -1,3 +1,4 @@
+// Thiago Kovalski
 using AcademiaDoZe.Presentation.AppMaui.Message;
 using CommunityToolkit.Mvvm.Messaging;
 

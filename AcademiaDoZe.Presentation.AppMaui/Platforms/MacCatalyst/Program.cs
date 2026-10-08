@@ -1,4 +1,5 @@
-﻿using ObjCRuntime;
+// Thiago Kovalski
+using ObjCRuntime;
 using UIKit;
 
 namespace AcademiaDoZe.Presentation.AppMaui;

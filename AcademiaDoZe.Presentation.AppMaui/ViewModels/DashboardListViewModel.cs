@@ -1,3 +1,4 @@
+// Thiago Kovalski
 using AcademiaDoZe.Application.Interfaces;
 using CommunityToolkit.Mvvm.Input;
 

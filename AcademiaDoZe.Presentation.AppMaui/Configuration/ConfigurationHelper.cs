@@ -1,3 +1,4 @@
+// Thiago Kovalski
 using AcademiaDoZe.Application.DependencyInjection;
 using AcademiaDoZe.Application.Enums;
 using AcademiaDoZe.Application.Mappings;

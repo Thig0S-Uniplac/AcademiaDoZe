@@ -1,4 +1,5 @@
-﻿using Foundation;
+// Thiago Kovalski
+using Foundation;
 
 namespace AcademiaDoZe.Presentation.AppMaui;
 

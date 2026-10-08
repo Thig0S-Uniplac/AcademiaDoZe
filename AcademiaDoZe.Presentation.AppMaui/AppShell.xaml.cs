@@ -1,3 +1,4 @@
+// Thiago Kovalski
 using AcademiaDoZe.Presentation.AppMaui.Views;
 
 namespace AcademiaDoZe.Presentation.AppMaui;
