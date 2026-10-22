@@ -1,4 +1,3 @@
-// Thiago Kovalski
 using AcademiaDoZe.Application.DTOs;
 using AcademiaDoZe.Presentation.AppMaui.ViewModels;
 

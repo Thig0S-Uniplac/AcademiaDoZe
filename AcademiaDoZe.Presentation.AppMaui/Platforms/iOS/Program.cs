@@ -1,5 +1,4 @@
-// Thiago Kovalski
-using UIKit;
+﻿using UIKit;
 
 namespace AcademiaDoZe.Presentation.AppMaui;
 

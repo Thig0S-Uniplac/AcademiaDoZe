@@ -1,4 +1,3 @@
-// Thiago Kovalski
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AcademiaDoZe.Presentation.AppMaui.ViewModels;

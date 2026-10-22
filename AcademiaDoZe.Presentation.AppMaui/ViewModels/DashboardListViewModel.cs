@@ -1,4 +1,3 @@
-// Thiago Kovalski
 using AcademiaDoZe.Application.Interfaces;
 using CommunityToolkit.Mvvm.Input;
 
@@ -76,9 +75,8 @@ public partial class DashboardListViewModel : BaseViewModel
     [RelayCommand]
     private async Task NavigateToLogradourosAsync() => await Shell.Current.GoToAsync("//logradouros");
 
-    // As seções abaixo ainda não possuem páginas no Shell; por enquanto apenas informam o usuário.
     [RelayCommand]
-    private Task NavigateToAlunosAsync() => EmBreveAsync("Alunos");
+    private Task NavigateToAlunosAsync() => Shell.Current.GoToAsync("//alunos");
 
     [RelayCommand]
     private Task NavigateToColaboradoresAsync() => EmBreveAsync("Colaboradores");

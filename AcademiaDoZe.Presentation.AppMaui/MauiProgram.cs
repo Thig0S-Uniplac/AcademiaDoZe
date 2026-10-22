@@ -1,9 +1,7 @@
-// Thiago Kovalski
 using AcademiaDoZe.Presentation.AppMaui.Configuration;
 using AcademiaDoZe.Presentation.AppMaui.ViewModels;
 using AcademiaDoZe.Presentation.AppMaui.Views;
 using Microsoft.Extensions.Logging;
-
 #if MAUI_DEVFLOW
 using Microsoft.Maui.DevFlow.Agent;
 #endif
@@ -34,9 +32,18 @@ public static class MauiProgram
 
         // Registrar ViewModels
         builder.Services.AddTransient<DashboardListViewModel>();
+        builder.Services.AddTransient<AlunoListViewModel>();
+        builder.Services.AddTransient<AlunoViewModel>();
         builder.Services.AddTransient<LogradouroListViewModel>();
         builder.Services.AddTransient<LogradouroViewModel>();
-
+        // Registrar ViewModels
+        builder.Services.AddTransient<ColaboradorListViewModel>();
+        builder.Services.AddTransient<ColaboradorViewModel>();
+        // Registrar Views
+        builder.Services.AddTransient<ColaboradorListPage>();
+        builder.Services.AddTransient<ColaboradorPage>();
+        builder.Services.AddTransient<AlunoListPage>();
+        builder.Services.AddTransient<AlunoPage>();
         // Registrar Views
         builder.Services.AddTransient<DashboardListPage>();
         builder.Services.AddTransient<LogradouroListPage>();

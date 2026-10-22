@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+             xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+             x:Class="AcademiaDoZe.Presentation.AppMaui.Views.AlunoPage"
+             x:DataType="vm:AlunoViewModel"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <converters:FotoToImageSourceConverter x:Key="FotoToImageSourceConverter" />
+        <converters:DateOnlyToDateTimeConverter x:Key="DateOnlyConverter" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="12" Padding="0,0,0,12">
+                <Border Style="{StaticResource CardBorder}" Margin="15,10">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="{Binding Aluno.Id, StringFormat='Aluno ID: {0}'}"
+                               Style="{StaticResource SubHeadline}"
+                               IsVisible="{Binding IsEditMode}" />
+                        <Label Text="CPF" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Entry Grid.Column="0"
+                                   Text="{Binding Aluno.Cpf}"
+                                   Placeholder="000.000.000-00"
+                                   Keyboard="Numeric"
+                                   MaxLength="14"
+                                   IsReadOnly="{Binding IsEditMode}"
+                                   ClearButtonVisibility="WhileEditing"
+                                   ReturnCommand="{Binding SearchByCpfCommand}" />
+                            <Button Grid.Column="1"
+                                    Text="Buscar"
+                                    Command="{Binding SearchByCpfCommand}"
+                                    IsVisible="{Binding IsNotBusy}"
+                                    Style="{StaticResource ButtonPrimary}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="15,0">
+                    <VerticalStackLayout Spacing="14">
+                        <Label Text="Dados Pessoais" Style="{StaticResource SubHeadline}" />
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Nome" />
+                            <Entry Text="{Binding Aluno.Nome}" Placeholder="Nome completo" MaxLength="150" ClearButtonVisibility="WhileEditing" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Data de Nascimento" />
+                            <DatePicker Date="{Binding Aluno.DataNascimento, Converter={StaticResource DateOnlyConverter}, Mode=TwoWay}"
+                                        Format="dd/MM/yyyy" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Telefone" />
+                            <Entry Text="{Binding Aluno.Telefone}" Placeholder="(00) 00000-0000" Keyboard="Telephone" MaxLength="15" ClearButtonVisibility="WhileEditing" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="E-mail" />
+                            <Entry Text="{Binding Aluno.Email}" Placeholder="exemplo@email.com" Keyboard="Email" MaxLength="100" ClearButtonVisibility="WhileEditing" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Senha" />
+                            <Entry Text="{Binding Aluno.Senha}" Placeholder="Digite a senha" IsPassword="True" MaxLength="50" />
+                            <Label Text="Deixe em branco para manter a senha atual."
+                                   FontSize="12"
+                                   IsVisible="{Binding IsEditMode}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Confirmar Senha" />
+                            <Entry Text="{Binding ConfirmarSenha}" Placeholder="Confirme a senha" IsPassword="True" MaxLength="50" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Foto" />
+                            <Image Source="{Binding Aluno.Foto, Converter={StaticResource FotoToImageSourceConverter}}"
+                                   Aspect="AspectFill"
+                                   HeightRequest="140"
+                                   WidthRequest="140"
+                                   HorizontalOptions="Center" />
+                            <Button Text="Selecionar Imagem"
+                                    Command="{Binding SelecionarFotoCommand}"
+                                    Style="{StaticResource ButtonPrimary}" />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="15,0">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Endereço" Style="{StaticResource SubHeadline}" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Entry Grid.Column="0"
+                                   Text="{Binding Aluno.Endereco.Cep}"
+                                   Placeholder="00000-000"
+                                   Keyboard="Numeric"
+                                   MaxLength="9"
+                                   ClearButtonVisibility="WhileEditing"
+                                   ReturnCommand="{Binding SearchByCepCommand}" />
+                            <Button Grid.Column="1"
+                                    Text="Buscar CEP"
+                                    Command="{Binding SearchByCepCommand}"
+                                    Style="{StaticResource ButtonPrimary}" />
+                        </Grid>
+                        <Border Padding="12"
+                                StrokeShape="RoundRectangle 8"
+                                Background="{AppThemeBinding Light=#FFF3CD, Dark=#332701}"
+                                IsVisible="{Binding HasNoEnderecoVinculado}">
+                            <Label Text="Nenhum logradouro vinculado. Informe o CEP e busque um logradouro cadastrado."
+                                   TextColor="{AppThemeBinding Light=#92400E, Dark=#FCD34D}" />
+                        </Border>
+                        <Border Padding="12"
+                                StrokeShape="RoundRectangle 8"
+                                Background="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray900}}"
+                                IsVisible="{Binding HasEnderecoVinculado}">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="Logradouro vinculado" FontAttributes="Bold" />
+                                <Label Text="{Binding Aluno.Endereco.Nome, StringFormat='Rua: {0}'}" />
+                                <Label Text="{Binding Aluno.Endereco.Bairro, StringFormat='Bairro: {0}'}" />
+                                <Label Text="{Binding Aluno.Endereco.Cidade, StringFormat='Cidade: {0}'}" />
+                                <Label Text="{Binding Aluno.Endereco.Estado, StringFormat='Estado: {0}'}" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Número" />
+                            <Entry Text="{Binding Aluno.Numero}" Placeholder="Número" MaxLength="20" ClearButtonVisibility="WhileEditing" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Complemento" />
+                            <Entry Text="{Binding Aluno.Complemento}" Placeholder="Opcional" MaxLength="50" ClearButtonVisibility="WhileEditing" />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="10" Margin="15,8">
+            <Button Grid.Column="0"
+                    Text="Cancelar"
+                    Command="{Binding CancelCommand}"
+                    Style="{StaticResource ButtonSecondary}"
+                    HeightRequest="50" />
+            <Button Grid.Column="1"
+                    Text="Salvar"
+                    Command="{Binding SaveAlunoCommand}"
+                    Style="{StaticResource ButtonPrimary}"
+                    HeightRequest="50" />
+        </Grid>
+
+        <Grid Grid.RowSpan="2" Background="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}" IsVisible="{Binding IsBusy}">
+            <ActivityIndicator IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- Thiago Kovalski -->
 <Shell
     x:Class="AcademiaDoZe.Presentation.AppMaui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -9,23 +8,37 @@
 
     <FlyoutItem Title="Dashboard">
         <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe88a;" Color="{AppThemeBinding Light=#212121, Dark=White}" />
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe871;" Color="{AppThemeBinding Light=#212121, Dark=White}" />
         </FlyoutItem.Icon>
         <ShellContent ContentTemplate="{DataTemplate views:DashboardListPage}" Route="dashboard" />
     </FlyoutItem>
 
     <FlyoutItem Title="Logradouros">
         <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe55b;" Color="{AppThemeBinding Light=#212121, Dark=White}" />
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe7f1;" Color="{AppThemeBinding Light=#212121, Dark=White}" />
         </FlyoutItem.Icon>
         <ShellContent ContentTemplate="{DataTemplate views:LogradouroListPage}" Route="logradouros" />
     </FlyoutItem>
 
     <FlyoutItem Title="Configurações">
         <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe429;" Color="{AppThemeBinding Light=#212121, Dark=White}" />
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b8;" Color="{AppThemeBinding Light=#212121, Dark=White}" />
         </FlyoutItem.Icon>
         <ShellContent ContentTemplate="{DataTemplate views:ConfigPage}" Route="configuracoes" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Colaboradores">
+<FlyoutItem.Icon>
+<FontImageSource FontFamily="MaterialIcons" Glyph="&#xea67;" />
+</FlyoutItem.Icon>
+<ShellContent ContentTemplate="{DataTemplate views:ColaboradorListPage}" Route="colaboradores" />
+</FlyoutItem>
+
+    <FlyoutItem Title="Alunos">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe80c;" Color="{AppThemeBinding Light=#212121, Dark=White}" />
+        </FlyoutItem.Icon>
+        <ShellContent ContentTemplate="{DataTemplate views:AlunoListPage}" Route="alunos" />
     </FlyoutItem>
 
 </Shell>
