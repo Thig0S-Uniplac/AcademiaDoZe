@@ -119,8 +119,6 @@ if (IsBusy)
 return;
 try {
 IsBusy = true;
-// Limpa a lista atual
-await MainThread.InvokeOnMainThreadAsync(() => { Colaboradores.Clear(); });
 IEnumerable<ColaboradorDto> resultados = [];
 using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
 // Busca os colaboradores de acordo com o filtro selecionado
@@ -189,6 +187,7 @@ await Shell.Current.DisplayAlertAsync("Validação", "Informe um vínculo válid
 // Atualiza a coleção na thread principal
 await MainThread.InvokeOnMainThreadAsync(() =>
 {
+Colaboradores.Clear();
 foreach (var item in resultados) {
 Colaboradores.Add(item);
 }

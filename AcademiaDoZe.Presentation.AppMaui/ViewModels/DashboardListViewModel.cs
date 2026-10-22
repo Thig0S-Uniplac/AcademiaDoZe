@@ -79,7 +79,7 @@ public partial class DashboardListViewModel : BaseViewModel
     private Task NavigateToAlunosAsync() => Shell.Current.GoToAsync("//alunos");
 
     [RelayCommand]
-    private Task NavigateToColaboradoresAsync() => EmBreveAsync("Colaboradores");
+    private Task NavigateToColaboradoresAsync() => Shell.Current.GoToAsync("//colaboradores");
 
     [RelayCommand]
     private Task NavigateToMatriculasAsync() => EmBreveAsync("Matrículas");

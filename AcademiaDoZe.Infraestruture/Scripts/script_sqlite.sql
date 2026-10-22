@@ -44,8 +44,8 @@ complemento TEXT NULL,
 senha TEXT NOT NULL,
 foto BLOB NULL,
 admissao TEXT NOT NULL, -- Data em formato ISO-8601 (YYYY-MM-DD)
-tipo INTEGER NOT NULL, -- Enum ColaboradorTipo (0=Administrador, 1=Atendente, 2=Instrutor)
-vinculo INTEGER NOT NULL, -- Enum ColaboradorVinculo (0=CLT, 1=Estágio)
+tipo INTEGER NOT NULL, -- Enum ColaboradorTipo (1=Administrador, 2=Atendente, 3=Instrutor)
+vinculo INTEGER NOT NULL, -- Enum ColaboradorVinculo (1=CLT, 2=Estágio)
 FOREIGN KEY (logradouro_id) REFERENCES tb_logradouro(id_logradouro) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 CREATE INDEX IF NOT EXISTS ix_tb_colaborador_cpf ON tb_colaborador(cpf);
