@@ -35,6 +35,7 @@ public static class MauiProgram
         builder.Services.AddTransient<LogradouroViewModel>();
         builder.Services.AddTransient<ColaboradorListViewModel>();
         builder.Services.AddTransient<ColaboradorViewModel>();
+        // Thiago Kovalski
         builder.Services.AddTransient<MatriculaListViewModel>();
         builder.Services.AddTransient<MatriculaViewModel>();
 
