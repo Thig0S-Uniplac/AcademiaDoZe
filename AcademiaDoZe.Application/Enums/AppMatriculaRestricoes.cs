@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AcademiaDoZe.Application.Enums;
 
+[Flags]
 public enum AppMatriculaRestricoes
 {
     [Display(Name = "Nenhuma Restrição")]

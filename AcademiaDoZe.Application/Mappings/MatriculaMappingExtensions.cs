@@ -28,10 +28,14 @@ public static class MatriculaMappingExtensions
         ArgumentNullException.ThrowIfNull(matriculaDto);
         ArgumentNullException.ThrowIfNull(aluno);
         Arquivo? laudo = null;
-        if (matriculaDto.LaudoMedico?.Conteudo != null)
+        if (matriculaDto.LaudoMedico != null)
         {
+            if (matriculaDto.LaudoMedico.Conteudo is not { Length: > 0 })
+                throw new InvalidOperationException("O laudo médico não pode estar vazio.");
             var laudoResult = Arquivo.Criar(matriculaDto.LaudoMedico.Conteudo);
-            if (laudoResult.IsSuccess) laudo = laudoResult.Value;
+            if (laudoResult.IsFailure)
+                throw new InvalidOperationException($"Laudo médico inválido: {string.Join(", ", laudoResult.Notifications.Select(n => n.Mensagem))}");
+            laudo = laudoResult.Value;
         }
         var result = Matricula.Criar(
         matriculaDto.Id,
@@ -54,21 +58,27 @@ public static class MatriculaMappingExtensions
         ArgumentNullException.ThrowIfNull(matricula);
         ArgumentNullException.ThrowIfNull(matriculaDto);
         ArgumentNullException.ThrowIfNull(aluno);
-        Arquivo? laudo = matricula.LaudoMedico;
-        if (matriculaDto.LaudoMedico?.Conteudo != null)
+        if (matriculaDto.AlunoMatricula == null || matriculaDto.AlunoMatricula.Id != matricula.AlunoId || aluno.Id != matricula.AlunoId)
+            throw new InvalidOperationException("Não é permitido alterar o aluno de uma matrícula existente.");
+        Arquivo? laudo = null;
+        if (matriculaDto.LaudoMedico != null)
         {
+            if (matriculaDto.LaudoMedico.Conteudo is not { Length: > 0 })
+                throw new InvalidOperationException("O laudo médico não pode estar vazio.");
             var laudoResult = Arquivo.Criar(matriculaDto.LaudoMedico.Conteudo);
-            if (laudoResult.IsSuccess) laudo = laudoResult.Value;
+            if (laudoResult.IsFailure)
+                throw new InvalidOperationException($"Laudo médico inválido: {string.Join(", ", laudoResult.Notifications.Select(n => n.Mensagem))}");
+            laudo = laudoResult.Value;
         }
         var result = Matricula.Criar(
         matricula.Id,
         aluno,
-        matriculaDto.Plano != default ? matriculaDto.Plano.ToDomain() : matricula.Plano,
-        matriculaDto.DataInicio != default ? matriculaDto.DataInicio : matricula.DataInicio,
-        matriculaDto.Objetivo ?? matricula.Objetivo,
-        matriculaDto.RestricoesMedicas != default ? matriculaDto.RestricoesMedicas.ToDomain() : matricula.RestricoesMedicas,
+        matriculaDto.Plano.ToDomain(),
+        matriculaDto.DataInicio,
+        matriculaDto.Objetivo,
+        matriculaDto.RestricoesMedicas.ToDomain(),
         laudo,
-        matriculaDto.ObservacoesRestricoes ?? matricula.ObservacoesRestricoes
+        matriculaDto.ObservacoesRestricoes ?? string.Empty
         );
         if (result.IsFailure)
         {

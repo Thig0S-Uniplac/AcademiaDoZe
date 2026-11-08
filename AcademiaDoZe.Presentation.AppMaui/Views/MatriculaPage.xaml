@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+             xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+             x:Class="AcademiaDoZe.Presentation.AppMaui.Views.MatriculaPage"
+             x:DataType="vm:MatriculaViewModel"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <converters:FotoToImageSourceConverter x:Key="FotoToImageSourceConverter" />
+        <converters:EnumDisplayConverter x:Key="EnumDisplay" />
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="16" Padding="15,10,15,20">
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Aluno da Matrícula" Style="{StaticResource SubHeadline}" />
+                        <Label Grid.Column="1" Text="{Binding Matricula.Id, StringFormat='ID: {0}'}" IsVisible="{Binding IsEditMode}" />
+                    </Grid>
+                    <Label Text="CPF do Aluno" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Entry Text="{Binding CpfBusca}" Placeholder="000.000.000-00" Keyboard="Numeric"
+                               MaxLength="14" ClearButtonVisibility="WhileEditing"
+                               IsEnabled="{Binding CanSelectAluno}" ReturnCommand="{Binding SearchByCpfCommand}" />
+                        <Button Grid.Column="1" Text="Buscar" Command="{Binding SearchByCpfCommand}"
+                                IsEnabled="{Binding CanSelectAluno}" Style="{StaticResource ButtonPrimary}" />
+                    </Grid>
+                    <Label Text="Informe o CPF e clique em Buscar para vincular um aluno cadastrado."
+                           IsVisible="{Binding HasNoAlunoVinculado}" LineBreakMode="WordWrap" />
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14" IsVisible="{Binding HasAlunoVinculado}">
+                        <Border HeightRequest="64" WidthRequest="64" StrokeShape="RoundRectangle 32">
+                            <Image Source="{Binding Matricula.AlunoMatricula.Foto, Converter={StaticResource FotoToImageSourceConverter}}" Aspect="AspectFill" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                            <Label Text="{Binding Matricula.AlunoMatricula.Nome}" FontAttributes="Bold" />
+                            <Label Text="{Binding Matricula.AlunoMatricula.Cpf, StringFormat='CPF: {0}'}" FontSize="12" />
+                            <Label Text="{Binding Matricula.AlunoMatricula.DataNascimento, StringFormat='Nascimento: {0:dd/MM/yyyy}'}" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <Label Text="O aluno não pode ser alterado em uma matrícula existente." IsVisible="{Binding IsEditMode}" FontSize="12" />
+                    <Label Text="Aluno menor de 16 anos: apresentação de laudo médico é obrigatória."
+                           IsVisible="{Binding IsMenor16}" LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Plano e Vigência" Style="{StaticResource SubHeadline}" />
+                    <Label Text="Tipo de Plano" />
+                    <Picker ItemsSource="{Binding PlanoTipos}" SelectedItem="{Binding PlanoSelecionado}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Data de Início" />
+                            <DatePicker Format="dd/MM/yyyy" Date="{Binding DataInicioSelecionada, Mode=TwoWay}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Término" />
+                            <Label Text="{Binding Matricula.DataFim, StringFormat='{0:dd/MM/yyyy}'}" VerticalOptions="Center" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <Label Text="Objetivo da Matrícula" />
+                    <Entry Text="{Binding Matricula.Objetivo}" Placeholder="Ex: Condicionamento, hipertrofia, saúde..."
+                           MaxLength="200" ClearButtonVisibility="WhileEditing" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Condições de Saúde e Restrições" Style="{StaticResource SubHeadline}" />
+                    <Label Text="Selecione as condições médicas diagnosticadas:" FontSize="12" />
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding RestricoesMulti}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:RestricaoSelectable">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <CheckBox IsChecked="{Binding IsSelected}" VerticalOptions="Center" />
+                                    <Label Grid.Column="1" Text="{Binding Value, Converter={StaticResource EnumDisplay}}"
+                                           VerticalOptions="Center" LineBreakMode="WordWrap" />
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                    <Label Text="Observações e Recomendações" />
+                    <Entry Text="{Binding Matricula.ObservacoesRestricoes}" Placeholder="Descreva cuidados específicos..."
+                           MaxLength="500" ClearButtonVisibility="WhileEditing" />
+                    <Label Text="Restrições médicas selecionadas: apresentação de laudo médico é obrigatória."
+                           IsVisible="{Binding HasRestricoes}" LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Laudo Médico" Style="{StaticResource SubHeadline}" />
+                    <Label Text="Laudo anexado" IsVisible="{Binding HasLaudo}" />
+                    <Label Text="Laudo obrigatório" IsVisible="{Binding LaudoPendente}" />
+                    <Label Text="Opcional" IsVisible="{Binding LaudoOpcional}" />
+                    <Label Text="Selecione uma imagem de até 15 MB." FontSize="12" />
+                    <Image Source="{Binding Matricula.LaudoMedico, Converter={StaticResource FotoToImageSourceConverter}}"
+                           Aspect="AspectFit" HeightRequest="120" IsVisible="{Binding HasLaudo}" />
+                    <Button Text="Selecionar Imagem" Command="{Binding SelecionarFotoCommand}" Style="{StaticResource ButtonPrimary}" />
+                    <Button Text="Remover Laudo" Command="{Binding RemoverLaudoCommand}"
+                            Style="{StaticResource ButtonSecondary}" IsVisible="{Binding HasLaudo}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Button Text="Cancelar" Command="{Binding CancelCommand}" Style="{StaticResource ButtonSecondary}" />
+                <Button Grid.Column="1" Text="Salvar" Command="{Binding SaveMatriculaCommand}" Style="{StaticResource ButtonPrimary}" />
+            </Grid>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

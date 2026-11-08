@@ -123,18 +123,17 @@ return m.ToDto(alunoDto);
         ArgumentNullException.ThrowIfNull(matriculaDto);
         var matriculaExistente = await _matriculaRepoFactory().ObterPorId(matriculaDto.Id, cancellationToken)
         ?? throw new KeyNotFoundException($"Matrícula com ID {matriculaDto.Id} não encontrada.");
+        if (matriculaDto.AlunoMatricula == null || matriculaDto.AlunoMatricula.Id != matriculaExistente.AlunoId)
+            throw new InvalidOperationException("Não é permitido alterar o aluno de uma matrícula existente.");
         var aluno = await _alunoRepoFactory().ObterPorId(matriculaExistente.AlunoId, cancellationToken)
         ?? throw new InvalidOperationException($"Aluno associado à matrícula {matriculaDto.Id} não encontrado.");
         bool menorDe16 = aluno.DataNascimento > DateOnly.FromDateTime(DateTime.Today.AddYears(-16));
-        bool possuiLaudo = (matriculaDto.LaudoMedico?.Conteudo != null && matriculaDto.LaudoMedico.Conteudo.Length > 0)
-        || (matriculaDto.LaudoMedico == null && matriculaExistente.LaudoMedico != null);
+        bool possuiLaudo = matriculaDto.LaudoMedico?.Conteudo is { Length: > 0 };
         if (menorDe16 && !possuiLaudo)
         {
             throw new InvalidOperationException("Alunos menores de 16 anos devem obrigatoriamente apresentar um laudo médico que os autorize a praticar atividades físicas.");
         }
-        var restricoes = matriculaDto.RestricoesMedicas != default
-        ? matriculaDto.RestricoesMedicas
-        : matriculaExistente.RestricoesMedicas.ToApplication();
+        var restricoes = matriculaDto.RestricoesMedicas;
         if (restricoes != AppMatriculaRestricoes.None && !possuiLaudo)
         {
             throw new InvalidOperationException("Alunos com restrições de saúde registradas devem apresentar um parecer médico autorizando a realização de atividades físicas.");
