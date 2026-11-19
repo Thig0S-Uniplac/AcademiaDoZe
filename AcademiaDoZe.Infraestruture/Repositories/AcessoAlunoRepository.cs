@@ -122,12 +122,12 @@ public class AcessoAlunoRepository : BaseRepository, IAcessoAlunoRepository
             var filters = new List<string>();
             if (alunoId.HasValue) filters.Add("ac.pessoa_id = @AlunoId");
             if (inicio.HasValue) filters.Add("ac.data_hora >= @Inicio");
-            if (fim.HasValue) filters.Add("ac.data_hora < DATEADD(day, 1, @Fim)");
+            if (fim.HasValue) filters.Add("ac.data_hora < @Fim");
             var query = $"{BaseSelectQuery}{(filters.Count > 0 ? " AND " + string.Join(" AND ", filters) : string.Empty)} ORDER BY ac.data_hora DESC";
             await using var command = await CreateCommandAsync(query, cancellationToken);
             if (alunoId.HasValue) command.AddParameter("@AlunoId", alunoId.Value, DbType.Int32);
             if (inicio.HasValue) command.AddParameter("@Inicio", inicio.Value.ToDateTime(TimeOnly.MinValue), DbType.DateTime);
-            if (fim.HasValue) command.AddParameter("@Fim", fim.Value.ToDateTime(TimeOnly.MinValue), DbType.DateTime);
+            if (fim.HasValue) command.AddParameter("@Fim", fim.Value.AddDays(1).ToDateTime(TimeOnly.MinValue), DbType.DateTime);
             await using var reader = await command.ExecuteReaderAsync(cancellationToken);
             var acessos = new List<AcessoAluno>();
             while (await reader.ReadAsync(cancellationToken)) acessos.Add(Map(reader));
@@ -158,10 +158,12 @@ public class AcessoAlunoRepository : BaseRepository, IAcessoAlunoRepository
     {
         try
         {
-            const string query = "SELECT COUNT(*) FROM tb_acesso WHERE pessoa_tipo = @PessoaTipo AND pessoa_id = @AlunoId AND CAST(data_hora AS DATE) = CAST(GETDATE() AS DATE)";
+            const string query = "SELECT COUNT(*) FROM tb_acesso WHERE pessoa_tipo = @PessoaTipo AND pessoa_id = @AlunoId AND data_hora >= @Inicio AND data_hora < @Fim";
             await using var command = await CreateCommandAsync(query, cancellationToken);
             command.AddParameter("@PessoaTipo", TipoAluno, DbType.Int32);
             command.AddParameter("@AlunoId", alunoId, DbType.Int32);
+            command.AddParameter("@Inicio", DateTime.Today, DbType.DateTime);
+            command.AddParameter("@Fim", DateTime.Today.AddDays(1), DbType.DateTime);
             var quantidade = Convert.ToInt32(await command.ExecuteScalarAsync(cancellationToken));
             return quantidade % 2 == 1;
         }

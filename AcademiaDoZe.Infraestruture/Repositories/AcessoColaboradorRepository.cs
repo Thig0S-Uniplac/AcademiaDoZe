@@ -122,12 +122,12 @@ public class AcessoColaboradorRepository : BaseRepository, IAcessoColaboradorRep
             var filters = new List<string>();
             if (colaboradorId.HasValue) filters.Add("ac.pessoa_id = @ColaboradorId");
             if (inicio.HasValue) filters.Add("ac.data_hora >= @Inicio");
-            if (fim.HasValue) filters.Add("ac.data_hora < DATEADD(day, 1, @Fim)");
+            if (fim.HasValue) filters.Add("ac.data_hora < @Fim");
             var query = $"{BaseSelectQuery}{(filters.Count > 0 ? " AND " + string.Join(" AND ", filters) : string.Empty)} ORDER BY ac.data_hora DESC";
             await using var command = await CreateCommandAsync(query, cancellationToken);
             if (colaboradorId.HasValue) command.AddParameter("@ColaboradorId", colaboradorId.Value, DbType.Int32);
             if (inicio.HasValue) command.AddParameter("@Inicio", inicio.Value.ToDateTime(TimeOnly.MinValue), DbType.DateTime);
-            if (fim.HasValue) command.AddParameter("@Fim", fim.Value.ToDateTime(TimeOnly.MinValue), DbType.DateTime);
+            if (fim.HasValue) command.AddParameter("@Fim", fim.Value.AddDays(1).ToDateTime(TimeOnly.MinValue), DbType.DateTime);
             await using var reader = await command.ExecuteReaderAsync(cancellationToken);
             var acessos = new List<AcessoColaborador>();
             while (await reader.ReadAsync(cancellationToken)) acessos.Add(Map(reader));
@@ -151,6 +151,25 @@ public class AcessoColaboradorRepository : BaseRepository, IAcessoColaboradorRep
         catch (DbException ex)
         {
             throw new InfrastructureException("ERRO_OBTER_ULTIMO_ACESSO_COLABORADOR", $"Erro ao obter último acesso do colaborador ID {colaboradorId}: {ex.Message}", ex);
+        }
+    }
+
+    public async Task<bool> EstaNaAcademia(int colaboradorId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            const string query = "SELECT COUNT(*) FROM tb_acesso WHERE pessoa_tipo = @PessoaTipo AND pessoa_id = @ColaboradorId AND data_hora >= @Inicio AND data_hora < @Fim";
+            await using var command = await CreateCommandAsync(query, cancellationToken);
+            command.AddParameter("@PessoaTipo", TipoColaborador, DbType.Int32);
+            command.AddParameter("@ColaboradorId", colaboradorId, DbType.Int32);
+            command.AddParameter("@Inicio", DateTime.Today, DbType.DateTime);
+            command.AddParameter("@Fim", DateTime.Today.AddDays(1), DbType.DateTime);
+            var quantidade = Convert.ToInt32(await command.ExecuteScalarAsync(cancellationToken));
+            return quantidade % 2 == 1;
+        }
+        catch (DbException ex)
+        {
+            throw new InfrastructureException("ERRO_VERIFICAR_PRESENCA_COLABORADOR", $"Erro ao verificar presença do colaborador ID {colaboradorId}: {ex.Message}", ex);
         }
     }
 

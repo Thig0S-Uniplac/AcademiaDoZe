@@ -1,6 +1,7 @@
 using AcademiaDoZe.Application.DTOs;
 using AcademiaDoZe.Application.Enums;
 using AcademiaDoZe.Application.Interfaces;
+using AcademiaDoZe.Domain.ValueObjects;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 namespace AcademiaDoZe.Presentation.AppMaui.ViewModels;
@@ -132,10 +133,14 @@ resultados = todos.Where(c => c.Nome.Contains(termo, StringComparison.OrdinalIgn
 }
 else if (SelectedFilterType == "CPF") {
 var cpfLimpo = new string([.. SearchText.Where(char.IsDigit)]);
-if (cpfLimpo.Length != 11) {
-await Shell.Current.DisplayAlertAsync("Validação", "Para buscar por CPF, informe os 11 dígitos numéricos.", "OK"); return;
+var cpfResult = Cpf.Criar(cpfLimpo);
+if (cpfResult.IsFailure) {
+var mensagem = cpfResult.Notifications.Any(notification => notification.Mensagem == "CPF_INVALIDO")
+? "O CPF informado é inválido. Confira os dígitos verificadores."
+: "Para buscar por CPF, informe os 11 dígitos numéricos.";
+await Shell.Current.DisplayAlertAsync("Validação", mensagem, "OK"); return;
 }
-var colaborador = await _colaboradorService.ObterPorCpfAsync(cpfLimpo, cts.Token);
+var colaborador = await _colaboradorService.ObterPorCpfAsync(cpfResult.Value!.Valor, cts.Token);
 if (colaborador != null)
 resultados = [colaborador];
 }

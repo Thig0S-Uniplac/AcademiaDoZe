@@ -15,8 +15,6 @@ public class AcessoColaborador : Entity, IAggregateRoot
         var notifications = new List<Notification>();
         if (colaborador == null)
             notifications.Add(new Notification("Colaborador", "COLABORADOR_INVALIDO"));
-        if (dataHora.TimeOfDay < new TimeSpan(6, 0, 0) || dataHora.TimeOfDay > new TimeSpan(22, 0, 0))
-            notifications.Add(new Notification("DataHora", "DATA_HORA_INTERVALO_INVALIDO"));
         if (notifications.Count != 0)
             return Result<AcessoColaborador>.Failure(notifications);
         return Result<AcessoColaborador>.Success(new AcessoColaborador(id, colaborador!.Id, dataHora));

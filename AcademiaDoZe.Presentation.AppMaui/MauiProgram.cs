@@ -38,6 +38,8 @@ public static class MauiProgram
         // Thiago Kovalski
         builder.Services.AddTransient<MatriculaListViewModel>();
         builder.Services.AddTransient<MatriculaViewModel>();
+        builder.Services.AddTransient<AlunoAcessoViewModel>();
+        builder.Services.AddTransient<ColaboradorAcessoViewModel>();
 
         // Registrar Views
         builder.Services.AddTransient<DashboardListPage>();
@@ -50,6 +52,8 @@ public static class MauiProgram
         builder.Services.AddTransient<AlunoPage>();
         builder.Services.AddTransient<MatriculaListPage>();
         builder.Services.AddTransient<MatriculaPage>();
+        builder.Services.AddTransient<AlunoAcessoPage>();
+        builder.Services.AddTransient<ColaboradorAcessoPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

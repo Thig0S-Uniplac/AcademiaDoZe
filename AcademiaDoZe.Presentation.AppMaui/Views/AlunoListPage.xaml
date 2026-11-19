@@ -40,8 +40,17 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="dto:AlunoDto">
                             <Border Style="{StaticResource CardBorder}" Margin="8">
-                                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8" Padding="8">
-                                    <VerticalStackLayout Grid.Column="0" Spacing="5" VerticalOptions="Center">
+                                <Grid ColumnDefinitions="96,*,Auto,Auto" ColumnSpacing="8" Padding="8">
+                                    <Border Grid.Column="0"
+                                            HeightRequest="88"
+                                            WidthRequest="88"
+                                            StrokeShape="RoundRectangle 44"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center">
+                                        <Image Source="{Binding Foto, Converter={StaticResource FotoToImageSourceConverter}}"
+                                               Aspect="AspectFill" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
                                         <Label Text="{Binding Nome}" FontAttributes="Bold" FontSize="17" />
                                         <Label Text="{Binding Cpf, StringFormat='CPF: {0}'}" />
                                         <Label Text="{Binding Telefone, StringFormat='Telefone: {0}'}" />
@@ -60,18 +69,13 @@
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label>
-                                        <Image Source="{Binding Foto, Converter={StaticResource FotoToImageSourceConverter}}"
-                                               Aspect="AspectFill"
-                                               HeightRequest="96"
-                                               WidthRequest="96"
-                                               HorizontalOptions="Start" />
                                     </VerticalStackLayout>
-                                    <Button Grid.Column="1"
+                                    <Button Grid.Column="2"
                                             Text="Editar"
                                             Style="{StaticResource ButtonSmall}"
                                             VerticalOptions="Start"
                                             Clicked="OnEditButtonClicked" />
-                                    <Button Grid.Column="2"
+                                    <Button Grid.Column="3"
                                             Text="Excluir"
                                             Style="{StaticResource ButtonDanger}"
                                             VerticalOptions="Start"

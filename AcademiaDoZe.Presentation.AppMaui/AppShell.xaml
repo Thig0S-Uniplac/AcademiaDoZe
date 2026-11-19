@@ -42,4 +42,16 @@
         </FlyoutItem.Icon>
         <ShellContent ContentTemplate="{DataTemplate views:MatriculaListPage}" Route="matriculas" />
     </FlyoutItem>
+    <FlyoutItem Title="Acesso de Alunos">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe7fe;" Color="{AppThemeBinding Light=#212121, Dark=White}" />
+        </FlyoutItem.Icon>
+        <ShellContent ContentTemplate="{DataTemplate views:AlunoAcessoPage}" Route="acesso-alunos" />
+    </FlyoutItem>
+    <FlyoutItem Title="Acesso de Colaboradores">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xea67;" Color="{AppThemeBinding Light=#212121, Dark=White}" />
+        </FlyoutItem.Icon>
+        <ShellContent ContentTemplate="{DataTemplate views:ColaboradorAcessoPage}" Route="acesso-colaboradores" />
+    </FlyoutItem>
 </Shell>

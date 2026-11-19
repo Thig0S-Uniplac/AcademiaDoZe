@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+             x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ColaboradorAcessoPage"
+             x:Name="AcessoColaboradorPage"
+             x:DataType="vm:ColaboradorAcessoViewModel"
+             Title="{Binding Title}">
+    <Grid RowDefinitions="Auto,Auto,*">
+        <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="15,10" IsVisible="{Binding ExibindoColaboradores}">
+            <SearchBar Text="{Binding SearchText}"
+                       Placeholder="Buscar colaborador por nome ou CPF" />
+        </Border>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="10" Margin="15,0,15,8">
+            <Button Text="Colaboradores" Command="{Binding MostrarColaboradoresCommand}" Style="{StaticResource ButtonPrimary}" />
+            <Button Grid.Column="1" Text="Acessos de hoje" Command="{Binding MostrarAcessosHojeCommand}" Style="{StaticResource ButtonPrimary}" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <CollectionView ItemsSource="{Binding ColaboradoresFiltrados}" IsVisible="{Binding ExibindoColaboradores}" SelectionMode="None" Margin="10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ColaboradorAcessoItem">
+                        <Border Style="{StaticResource CardBorder}" Margin="5">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="8">
+                                <VerticalStackLayout Spacing="5" VerticalOptions="Center">
+                                    <Label Text="{Binding Nome}" FontAttributes="Bold" FontSize="17" />
+                                    <Label Text="{Binding Cpf, StringFormat='CPF: {0}'}" FontSize="12" />
+                                    <Label Text="{Binding SituacaoAcesso}" FontSize="12" />
+                                </VerticalStackLayout>
+                                <Button Grid.Column="1"
+                                        Text="{Binding Acao}"
+                                        Command="{Binding BindingContext.RegistrarAcessoCommand, Source={x:Reference AcessoColaboradorPage}}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource ButtonPrimary}"
+                                        VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="Nenhum colaborador encontrado"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Style="{StaticResource SubHeadline}" />
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+            <CollectionView ItemsSource="{Binding AcessosHoje}" IsVisible="{Binding ExibindoAcessosHoje}" SelectionMode="None" Margin="10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:AcessoHojeItem">
+                        <Border Style="{StaticResource CardBorder}" Margin="5">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="8">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Nome}" FontAttributes="Bold" FontSize="16" />
+                                    <Label Text="{Binding DataHora, StringFormat='{0:HH:mm:ss}'}" FontSize="13" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="1" Text="{Binding TipoAcesso}" FontAttributes="Bold" VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="Nenhum acesso registrado hoje"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Style="{StaticResource SubHeadline}" />
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </Grid>
+
+        <Grid Grid.RowSpan="3" Background="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}" IsVisible="{Binding IsBusy}">
+            <ActivityIndicator IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

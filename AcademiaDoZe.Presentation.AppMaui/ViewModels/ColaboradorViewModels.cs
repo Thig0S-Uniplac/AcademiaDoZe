@@ -1,6 +1,7 @@
 using AcademiaDoZe.Application.DTOs;
 using AcademiaDoZe.Application.Enums;
 using AcademiaDoZe.Application.Interfaces;
+using AcademiaDoZe.Domain.ValueObjects;
 using CommunityToolkit.Mvvm.Input;
 namespace AcademiaDoZe.Presentation.AppMaui.ViewModels;
 [QueryProperty(nameof(ColaboradorId), "Id")]
@@ -148,16 +149,20 @@ await Shell.Current.DisplayAlertAsync("Aviso", "Informe o CPF para realizar a bu
 return;
 }
 var apenasDigitos = new string([.. Colaborador.Cpf.Where(char.IsDigit)]);
-if (apenasDigitos.Length != 11)
+var cpfResult = Cpf.Criar(apenasDigitos);
+if (cpfResult.IsFailure)
 {
-await Shell.Current.DisplayAlertAsync("Validação", "O CPF deve conter exatamente 11 dígitos numéricos.", "OK");
+var mensagem = cpfResult.Notifications.Any(notification => notification.Mensagem == "CPF_INVALIDO")
+? "O CPF informado é inválido. Confira os dígitos verificadores."
+: "O CPF deve conter exatamente 11 dígitos numéricos.";
+await Shell.Current.DisplayAlertAsync("Validação", mensagem, "OK");
 return;
 }
 try
 {
 IsBusy = true;
 using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-var colaboradorData = await _colaboradorService.ObterPorCpfAsync(apenasDigitos, cts.Token);
+var colaboradorData = await _colaboradorService.ObterPorCpfAsync(cpfResult.Value!.Valor, cts.Token);
 if (colaboradorData != null)
 {
 colaboradorData.Endereco ??= new LogradouroDto
@@ -378,8 +383,11 @@ errors.Add("• Nome é obrigatório.");
 if (string.IsNullOrWhiteSpace(colaborador.Cpf)) {
 errors.Add("• CPF é obrigatório.");
 } else {
-var apenasDigitosCpf = new string([.. colaborador.Cpf.Where(char.IsDigit)]);
-if (apenasDigitosCpf.Length != 11) {
+var cpfResult = Cpf.Criar(colaborador.Cpf);
+if (cpfResult.IsFailure) {
+if (cpfResult.Notifications.Any(notification => notification.Mensagem == "CPF_INVALIDO"))
+errors.Add("• CPF inválido: confira os dígitos verificadores.");
+else
 errors.Add("• CPF deve conter exatamente 11 dígitos numéricos.");
 }
 }

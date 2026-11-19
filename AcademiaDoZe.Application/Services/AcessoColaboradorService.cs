@@ -47,6 +47,9 @@ public class AcessoColaboradorService : IAcessoColaboradorService
     public async Task<AcessoColaboradorDto?> ObterUltimoAcessoAsync(int colaboradorId, CancellationToken cancellationToken = default)
         => (await _acessoRepoFactory().ObterUltimoAcesso(colaboradorId, cancellationToken))?.ToDto();
 
+    public Task<bool> EstaNaAcademiaAsync(int colaboradorId, CancellationToken cancellationToken = default)
+        => _acessoRepoFactory().EstaNaAcademia(colaboradorId, cancellationToken);
+
     public Task<TimeSpan> ObterHorasTrabalhadasNoDiaAsync(int colaboradorId, DateOnly data, CancellationToken cancellationToken = default)
         => _acessoRepoFactory().ObterHorasTrabalhadasNoDia(colaboradorId, data, cancellationToken);
 }

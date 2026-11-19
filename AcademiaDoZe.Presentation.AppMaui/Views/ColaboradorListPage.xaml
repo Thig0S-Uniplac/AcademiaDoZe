@@ -24,8 +24,8 @@ Utilizamos OnIdiom para ajustar propriedades conforme o tipo de dispositivo: Pho
 <DataTemplate x:Key="ColaboradorItemTemplate" x:DataType="dto:ColaboradorDto">
 <Grid Padding="1" Margin="5">
 <Border Style="{StaticResource CardBorder}" Margin="10">
-<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto,Auto">
-<Image Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="11" Source="{Binding Foto, Converter={StaticResource FotoToImageSourceConverter}}" Aspect="AspectFill" Margin="0,0,10,0" >
+<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="110,*,Auto,Auto">
+<Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="11" Source="{Binding Foto, Converter={StaticResource FotoToImageSourceConverter}}" Aspect="AspectFill" Margin="0,0,10,0" >
 <!-- HeightRequest conforme OnIdiom - utilizando objeto filho -->
 
 <Image.HeightRequest>
@@ -50,15 +50,15 @@ Utilizamos OnIdiom para ajustar propriedades conforme o tipo de dispositivo: Pho
 </OnIdiom>
 </Image.WidthRequest>
 </Image>
-<Label Grid.Row="0" Grid.Column="0" Text="{Binding Nome}" FontAttributes="Bold" FontSize="16" Margin="0,0,0,5"/>
-<Label Grid.Row="1" Grid.Column="0" Text="{Binding Cpf, StringFormat='CPF: {0}'}" Margin="0,0,0,5"/>
-<Label Grid.Row="2" Grid.Column="0" Text="{Binding Telefone, StringFormat='Telefone: {0}'}" Margin="0,0,0,5"/>
-<Label Grid.Row="3" Grid.Column="0" Text="{Binding Email, StringFormat='E-mail: {0}'}" Margin="0,0,0,5"/>
-<Label Grid.Row="4" Grid.Column="0" Text="{Binding DataNascimento, StringFormat='Nascimento: {0:dd/MM/yyyy}'}" Margin="0,0,0,5"/>
-<Label Grid.Row="5" Grid.Column="0" Text="{Binding DataAdmissao, StringFormat='Admissão: {0:dd/MM/yyyy}'}" Margin="0,0,0,5"/>
-<Label Grid.Row="6" Grid.Column="0" Text="{Binding Tipo, Converter={StaticResource EnumDisplay}, StringFormat='Cargo: {0}'}" Margin="0,0,0,5"/>
-<Label Grid.Row="7" Grid.Column="0" Text="{Binding Vinculo, Converter={StaticResource EnumDisplay}, StringFormat='Vínculo: {0}'}" Margin="0,0,0,5"/>
-<Label Grid.Row="8" Grid.Column="0" Margin="0,0,0,5">
+<Label Grid.Row="0" Grid.Column="1" Text="{Binding Nome}" FontAttributes="Bold" FontSize="16" Margin="0,0,0,5"/>
+<Label Grid.Row="1" Grid.Column="1" Text="{Binding Cpf, StringFormat='CPF: {0}'}" Margin="0,0,0,5"/>
+<Label Grid.Row="2" Grid.Column="1" Text="{Binding Telefone, StringFormat='Telefone: {0}'}" Margin="0,0,0,5"/>
+<Label Grid.Row="3" Grid.Column="1" Text="{Binding Email, StringFormat='E-mail: {0}'}" Margin="0,0,0,5"/>
+<Label Grid.Row="4" Grid.Column="1" Text="{Binding DataNascimento, StringFormat='Nascimento: {0:dd/MM/yyyy}'}" Margin="0,0,0,5"/>
+<Label Grid.Row="5" Grid.Column="1" Text="{Binding DataAdmissao, StringFormat='Admissão: {0:dd/MM/yyyy}'}" Margin="0,0,0,5"/>
+<Label Grid.Row="6" Grid.Column="1" Text="{Binding Tipo, Converter={StaticResource EnumDisplay}, StringFormat='Cargo: {0}'}" Margin="0,0,0,5"/>
+<Label Grid.Row="7" Grid.Column="1" Text="{Binding Vinculo, Converter={StaticResource EnumDisplay}, StringFormat='Vínculo: {0}'}" Margin="0,0,0,5"/>
+<Label Grid.Row="8" Grid.Column="1" Margin="0,0,0,5">
 <Label.FormattedText>
 <FormattedString>
 <Span Text="{Binding Endereco.Nome}"/>
@@ -77,14 +77,14 @@ Utilizamos OnIdiom para ajustar propriedades conforme o tipo de dispositivo: Pho
 </Label.FormattedText>
 </Label>
 
-<Label Grid.Row="9" Grid.Column="0" Text="{Binding Complemento, StringFormat='Complemento: {0}'}" Margin="0,0,0,5"/>
-<Button Grid.Row="0" Grid.Column="1" Text="" Style="{StaticResource ButtonSmall}" Margin="4,0" Clicked="OnEditButtonClicked">
+<Label Grid.Row="9" Grid.Column="1" Text="{Binding Complemento, StringFormat='Complemento: {0}'}" Margin="0,0,0,5"/>
+<Button Grid.Row="0" Grid.Column="2" Text="" Style="{StaticResource ButtonSmall}" Margin="4,0" Clicked="OnEditButtonClicked">
 <Button.ImageSource>
 <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe3c9;" />
 </Button.ImageSource>
 </Button>
 
-<Button Grid.Row="0" Grid.Column="2" Text="" Style="{StaticResource ButtonDanger}" Margin="4,0" Clicked="OnDeleteButtonClicked">
+<Button Grid.Row="0" Grid.Column="3" Text="" Style="{StaticResource ButtonDanger}" Margin="4,0" Clicked="OnDeleteButtonClicked">
 
 <Button.ImageSource>
 <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe872;" />

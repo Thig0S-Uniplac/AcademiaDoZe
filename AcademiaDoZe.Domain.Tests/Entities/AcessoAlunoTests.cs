@@ -40,17 +40,18 @@ public class AcessoAlunoTests
         }
     }
 
-    [Theory(DisplayName = "AcessoAluno: horario fora do intervalo -> DATAHORA_INTERVALO")]
+    [Theory(DisplayName = "AcessoAluno: permite registrar o horário real fora do antigo intervalo")]
+    [InlineData(0, 0)]
     [InlineData(5, 59)]
     [InlineData(22, 1)]
-    public void Deve_Falhar_Criacao_Quando_HorarioForaDoIntervalo(int hour, int minute)
+    [InlineData(23, 59)]
+    public void Deve_Permitir_Criacao_Em_Qualquer_Horario(int hour, int minute)
     {
         var aluno = GetValidAluno();
         var dataHora = DateTime.Today.AddHours(hour).AddMinutes(minute);
         var result = AcessoAluno.Criar(1, aluno, dataHora);
-        Assert.True(result.IsFailure);
-        Assert.NotEmpty(result.Notifications);
-        Assert.Contains(result.Notifications, n => n.Mensagem == "DATA_HORA_INTERVALO_INVALIDO");
+        Assert.True(result.IsSuccess);
+        Assert.Equal(dataHora, result.Value!.DataHora);
     }
 
     [Theory(DisplayName = "AcessoAluno: criação bem-sucedida em horários permitidos")]

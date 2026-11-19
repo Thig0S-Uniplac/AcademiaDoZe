@@ -73,17 +73,19 @@ public class ValueObjectsTests
         Assert.Equal("CPF_OBRIGATORIO", result.Notifications.First().Mensagem);
     }
     [Theory(DisplayName = "Cpf: formatos válidos (com e sem pontuação)")]
-    [InlineData("529.982.247-25")]
-    [InlineData("52998224725")]
-    public void Deve_Criar_Cpf_Quando_ValorValido(string input)
+    [InlineData("529.982.247-25", "52998224725")]
+    [InlineData("52998224725", "52998224725")]
+    [InlineData("100.100.100-17", "10010010017")]
+    public void Deve_Criar_Cpf_Quando_ValorValido(string input, string expected)
     {
         var result = Cpf.Criar(input);
         Assert.True(result.IsSuccess);
-        Assert.Equal("52998224725", result.Value!.Valor);
+        Assert.Equal(expected, result.Value!.Valor);
     }
     [Theory(DisplayName = "Cpf: inválido - dígitos/verificador incorreto -> CPF_INVALIDO")]
     [InlineData("123.456.789-00")]
     [InlineData("111.111.111-11")]
+    [InlineData("100.100.100-16")]
     public void Deve_Falhar_Criacao_Quando_CpfInvalido(string input)
     {
         var result = Cpf.Criar(input);

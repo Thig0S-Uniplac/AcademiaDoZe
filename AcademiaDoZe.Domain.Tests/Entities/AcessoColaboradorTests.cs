@@ -44,17 +44,18 @@ public class AcessoColaboradorTests
         }
     }
 
-    [Theory(DisplayName = "AcessoColaborador: horario fora do intervalo -> DATAHORA_INTERVALO")]
+    [Theory(DisplayName = "AcessoColaborador: permite registrar o horário real fora do antigo intervalo")]
+    [InlineData(0, 0)]
     [InlineData(5, 59)]
     [InlineData(22, 1)]
-    public void Deve_Falhar_Criacao_Quando_HorarioForaDoIntervalo(int hour, int minute)
+    [InlineData(23, 59)]
+    public void Deve_Permitir_Criacao_Em_Qualquer_Horario(int hour, int minute)
     {
         var colaborador = GetValidColaborador();
         var dataHora = DateTime.Today.AddHours(hour).AddMinutes(minute);
         var result = AcessoColaborador.Criar(1, colaborador, dataHora);
-        Assert.True(result.IsFailure);
-        Assert.NotEmpty(result.Notifications);
-        Assert.Contains(result.Notifications, n => n.Mensagem == "DATA_HORA_INTERVALO_INVALIDO");
+        Assert.True(result.IsSuccess);
+        Assert.Equal(dataHora, result.Value!.DataHora);
     }
 
     [Theory(DisplayName = "AcessoColaborador: criação bem-sucedida em horários permitidos")]
