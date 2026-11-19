@@ -13,7 +13,7 @@ namespace AcademiaDoZe.Application.Tests.Services;
 public class AcessoAlunoServiceTests
 {
     [Fact]
-    public async Task Registro_de_acesso_permite_visitante_e_exige_nome_completo_do_matriculado()
+    public async Task Bloqueia_entrada_sem_matricula_mas_permite_saida_e_exige_nome_completo()
     {
         var connectionString = $"Data Source=AcademiaAcesso_{Guid.NewGuid():N};Mode=Memory;Cache=Shared";
         await using var connection = new SqliteConnection(connectionString);
@@ -40,7 +40,13 @@ public class AcessoAlunoServiceTests
             () => new MatriculaRepository(connectionString, DatabaseType.Sqlite));
 
         var horarioEntrada = DateTime.Today.AddHours(10);
-        await service.AdicionarAsync(new AcessoAlunoDto { AlunoId = visitante.Id, DataHora = horarioEntrada });
+        var erroMatricula = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            service.AdicionarAsync(new AcessoAlunoDto { AlunoId = visitante.Id, DataHora = horarioEntrada }));
+        Assert.Contains("Entrada na academia bloqueada", erroMatricula.Message, StringComparison.OrdinalIgnoreCase);
+        Assert.False(await service.EstaNaAcademiaAsync(visitante.Id));
+
+        var acessoLegado = AcessoAluno.Criar(0, visitante, horarioEntrada).Value!;
+        await acessoRepository.Adicionar(acessoLegado);
         Assert.True(await service.EstaNaAcademiaAsync(visitante.Id));
 
         await service.AdicionarAsync(new AcessoAlunoDto { AlunoId = visitante.Id, DataHora = horarioEntrada.AddHours(1) });

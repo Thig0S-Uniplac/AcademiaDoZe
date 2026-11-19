@@ -11,7 +11,9 @@ public partial class AlunoAcessoItem : ObservableObject
     public bool PossuiMatriculaAtiva { get; }
     public string SituacaoMatricula => PossuiMatriculaAtiva ? "Matriculado" : "Sem matrícula";
     public string SituacaoAcesso => EstaNaAcademia ? "Na academia" : "Fora da academia";
-    public string Acao => EstaNaAcademia ? "Registrar saída" : "Registrar entrada";
+    public string Acao => EstaNaAcademia
+        ? "Registrar saída"
+        : PossuiMatriculaAtiva ? "Registrar entrada" : "Entrada bloqueada";
 
     private bool _estaNaAcademia;
     public bool EstaNaAcademia

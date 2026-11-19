@@ -120,6 +120,15 @@ public partial class AlunoAcessoViewModel : BaseViewModel
             return;
 
         var registrandoSaida = aluno.EstaNaAcademia;
+        if (!registrandoSaida && !aluno.PossuiMatriculaAtiva)
+        {
+            await Shell.Current.DisplayAlertAsync(
+                "Entrada bloqueada",
+                $"{aluno.Nome} não possui matrícula ativa e não pode entrar na academia.",
+                "OK");
+            return;
+        }
+
         try
         {
             IsBusy = true;

@@ -33,11 +33,14 @@ public class AcessoAlunoService : IAcessoAlunoService
         ArgumentNullException.ThrowIfNull(acessoDto);
         var aluno = await _alunoRepoFactory().ObterPorId(acessoDto.AlunoId, cancellationToken)
             ?? throw new KeyNotFoundException($"Aluno com ID {acessoDto.AlunoId} não encontrado.");
-        if (!await _acessoRepoFactory().EstaNaAcademia(aluno.Id, cancellationToken) &&
-            await _matriculaRepoFactory().PossuiMatriculaAtiva(aluno.Id, cancellationToken) &&
-            aluno.Nome.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length < 2)
+        var estaNaAcademia = await _acessoRepoFactory().EstaNaAcademia(aluno.Id, cancellationToken);
+        if (!estaNaAcademia)
         {
-            throw new InvalidOperationException("Alunos matriculados devem possuir nome completo cadastrado.");
+            if (!await _matriculaRepoFactory().PossuiMatriculaAtiva(aluno.Id, cancellationToken))
+                throw new InvalidOperationException("Aluno sem matrícula ativa. Entrada na academia bloqueada.");
+
+            if (aluno.Nome.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length < 2)
+                throw new InvalidOperationException("Alunos matriculados devem possuir nome completo cadastrado.");
         }
 
         var result = Domain.Entities.AcessoAluno.Criar(acessoDto.Id, aluno, acessoDto.DataHora);
